@@ -1,0 +1,76 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# IntelliJ related
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code related
+.vscode/
+.history/
+
+# Android related
+.android/
+local.properties
+**/*.lock
+.DS_Store
+
+# iOS related
+.ios/
+Flutter/Flutter.framework/
+Flutter/Flutter.podspec
+Flutter/App.framework
+Pods/
+Podfile.lock
+.DS_Store
+DerivedData/
+*.xcworkspace
+*.xcuserstate
+
+# Web related
+build/
+.dart_tool/
+
+# macOS related
+build/
+.dart_tool/
+macos/Flutter/ephemeral/
+
+# Windows related
+build/
+.dart_tool/
+windows/Flutter/ephemeral/
+
+# Linux related
+build/
+.dart_tool/
+linux/Flutter/ephemeral/
+
+# Firebase related
+ios/Runner/GoogleService-Info.plist
+android/app/google-services.json
+
+# Coverage related
+coverage/
+
+# Other
+*.log
+*.tmp
+*.swp
+*~
+
+# User-specific files
+*.sublime-workspace
+*.sublime-project
+*.pyc
+*.pyo
+*.pyd
+venv/
