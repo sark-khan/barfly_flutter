@@ -1,5 +1,6 @@
 import 'package:barfly/routeGenerator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 // import 'package:get_storage/get_storage.dart';
 
@@ -15,13 +16,14 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  // SemanticsBinding.instance.ensureSemantics();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/insider-selector-screen',
+        initialRoute: '/menu-screen',
         onGenerateRoute: RouteGenerator.generateRoute);
   }
 }

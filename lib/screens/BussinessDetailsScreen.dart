@@ -67,7 +67,7 @@ class _BussinessDetailsScreenState extends State<BussinessDetailsScreen> {
                         onPressed: () => {
                           Navigator.pushNamed(
                               context, "/account-details-screen",
-                              arguments: {"accountName": "Bar"})
+                              arguments: {"productType": "Bar"})
                         },
                         style: ElevatedButton.styleFrom(
                             // shape: CircleBorder(eccentricity: 0.),
@@ -97,10 +97,9 @@ class _BussinessDetailsScreenState extends State<BussinessDetailsScreen> {
                         onPressed: () => {
                           Navigator.pushNamed(
                               context, "/account-details-screen",
-                              arguments: {"accountName": "Club"})
+                              arguments: {"productType": "Club"})
                         },
                         style: ElevatedButton.styleFrom(
-                            // shape: CircleBorder(eccentricity: 0.),
                             backgroundColor: Color(0xFF2ac4aa)),
                         child: const Padding(
                           padding: EdgeInsets.symmetric(
@@ -127,7 +126,7 @@ class _BussinessDetailsScreenState extends State<BussinessDetailsScreen> {
                         onPressed: () => {
                           Navigator.pushNamed(
                               context, "/account-details-screen",
-                              arguments: {"accountName": "Foodtruck"})
+                              arguments: {"productType": "Foodtruck"})
                         },
                         style: ElevatedButton.styleFrom(
                             // shape: CircleBorder(eccentricity: 0.),
@@ -157,7 +156,7 @@ class _BussinessDetailsScreenState extends State<BussinessDetailsScreen> {
                         onPressed: () => {
                           Navigator.pushNamed(
                               context, "/account-details-screen",
-                              arguments: {"accountName": "Restaurant"})
+                              arguments: {"productType": "Restaurant"})
                         },
                         style: ElevatedButton.styleFrom(
                             // shape: CircleBorder(eccentricity: 0.),
@@ -187,7 +186,7 @@ class _BussinessDetailsScreenState extends State<BussinessDetailsScreen> {
                         onPressed: () => {
                           Navigator.pushNamed(
                               context, "/account-details-screen",
-                              arguments: {"accountName": "Business"})
+                              arguments: {"productType": "Business"})
                         },
                         style: ElevatedButton.styleFrom(
                             // shape: CircleBorder(eccentricity: 0.),

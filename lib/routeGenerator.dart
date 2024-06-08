@@ -3,17 +3,10 @@ import 'package:barfly/screens/BussinessDetailsScreen.dart';
 import 'package:barfly/screens/EntryScreen.dart';
 import 'package:barfly/screens/InsiderScreen.dart';
 import 'package:barfly/screens/InsiderSelectorScreen.dart';
+import 'package:barfly/screens/LoginScreen.dart';
+import 'package:barfly/screens/MenuScreen.dart';
+import 'package:barfly/screens/OtpVerificationScreen.dart';
 import 'package:flutter/material.dart';
-// import 'package:tsf/components/background.dart';
-// import 'package:tsf/screens/ForgotPassword.dart';
-// import 'package:tsf/screens/HomeScreen.dart';
-// import 'package:tsf/screens/Login.dart';
-// import 'package:tsf/screens/Notifications.dart';
-// import 'package:tsf/screens/OrderDetails.dart';
-// import 'package:tsf/screens/ResetPassword.dart';
-// import 'package:tsf/screens/ResetPasswordSuccess.dart';
-// import 'package:tsf/screens/adminDashboard.dart';
-// import 'package:tsf/screens/adminScreens/NotificationScreen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -22,6 +15,10 @@ class RouteGenerator {
       case '/entry-screen':
         return FadeRoute(
           page: EntryScreen(),
+        );
+      case '/login-screen':
+        return FadeRoute(
+          page: LoginScreen(),
         );
       case '/bussiness-details-screen':
         return FadeRoute(
@@ -32,16 +29,31 @@ class RouteGenerator {
       case '/account-details-screen':
         return MaterialPageRoute(
             builder: (_) => AccountDetailsScreen(
-                  accountName: args!["accountName"],
+                  productType: args!["productType"],
+                  // isOrderPage: args["isOrderPage"],
+                ));
+      case '/otp-screen':
+        return MaterialPageRoute(
+            builder: (_) => OtpverificationScreen(
+                  productType: args!["productType"],
+                  firstName: args["firstName"],
+                  lastName: args["lastName"],
+                  email: args["email"],
+                  contactNumber: args["contactNumber"],
+                  city: args["city"],
+                  street: args["street"],
+                  zipcode: args["zipcode"],
+                  // productType: args!["productType"],
+                  productName: args!["productName"],
                   // isOrderPage: args["isOrderPage"],
                 ));
       case '/insider-screen':
         return FadeRoute(page: InsiderScreen());
 
       case '/insider-selector-screen':
-        return FadeRoute(page: Insiderselectorscreen());
-      // case '/notification':
-      //   return FadeRoute(page: const Notifications());
+        return FadeRoute(page: InsiderSelectorScreen());
+      case '/menu-screen':
+        return FadeRoute(page: MenuScreen());
       // case '/admin-notifications':
       //   return MaterialPageRoute(builder: (_) => AdminNotifications());
       // case '/reset-password':

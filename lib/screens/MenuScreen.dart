@@ -3,12 +3,12 @@ import 'package:barfly/components/Buttons.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 
-class InsiderScreen extends StatefulWidget {
+class MenuScreen extends StatefulWidget {
   @override
-  State createState() => _InsiderScreenState();
+  State createState() => _MenuScreenState();
 }
 
-class _InsiderScreenState extends State<InsiderScreen> {
+class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -21,7 +21,7 @@ class _InsiderScreenState extends State<InsiderScreen> {
             width: screenWidth,
             height: screenHeight,
             decoration: const BoxDecoration(color: APPCOLORS.backgroundColor),
-            child: const Column(
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -30,28 +30,36 @@ class _InsiderScreenState extends State<InsiderScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text("Connect with \nyour guests!",
+                    child: Text("Menu",
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w100,
                             fontSize: 30,
                             decoration: TextDecoration.none)),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  MenuButton(
+                    text: "Alcohol drinks",
+                    onPressed: () => {},
+                    heightofButton: 140,
+                    widthofButton: 300,
+                    borderRadius: 20,
+                  ),
                 ]),
           ),
           Center(
-            child: CustomButton(
-              text: "Add\nInsider\n+",
-              onPressed: () =>
-                  {Navigator.pushNamed(context, "/insider-selector-screen")},
-              heightofButton: 160,
-              widthofButton: 180,
-              fontWeight: FontWeight.w600,
-              borderRadius: 20,
-              fontSize: 30,
-              horizontalPadding: 5,
-            ),
-          ),
+              child: CustomButtonStroked(
+            text: "+",
+            fontSize: 60,
+            verticalPadding: 2,
+            widthofButton: 100,
+            heightofButton: 100,
+            borderRadius: 30,
+            horizontalPadding: 2,
+            onPressed: () => {},
+          )),
         ]));
   }
 }

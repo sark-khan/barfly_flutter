@@ -1,4 +1,5 @@
 // import 'package:flutter/cupertino.dart';
+import 'package:barfly/appConstants.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
 // import 'package:flutter/widgets.dart';
@@ -52,7 +53,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           padding: EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 25.0),
                           child: Text(
-                            "Sign Up!",
+                            APP_TEXT_CONSTANTS.signUpText,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 28,
@@ -70,7 +71,8 @@ class _EntryScreenState extends State<EntryScreen> {
                       height: 70,
                       width: 220,
                       child: ElevatedButton(
-                        onPressed: () => {},
+                        onPressed: () =>
+                            {Navigator.pushNamed(context, "/login-screen")},
                         style: ElevatedButton.styleFrom(
                             // shape: CircleBorder(eccentricity: 0.),
                             side: const BorderSide(
@@ -80,7 +82,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           padding: EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 25.0),
                           child: Text(
-                            "Log In!",
+                            APP_TEXT_CONSTANTS.LOGIN,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 28,
