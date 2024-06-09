@@ -114,7 +114,7 @@ class MenuButton extends StatelessWidget {
                 // Gradient background
                 Positioned.fill(
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
                           Color.fromARGB(255, 42, 240, 194),
@@ -155,7 +155,7 @@ class MenuButton extends StatelessWidget {
                               child: TextField(
                                 controller: menuTextController,
                                 textAlignVertical: TextAlignVertical.center,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: 'Enter text...',
                                   hintStyle: TextStyle(color: Colors.white),
                                   border: InputBorder.none,
@@ -168,11 +168,12 @@ class MenuButton extends StatelessWidget {
                                   fontWeight: fontWeight,
                                 ),
                                 textAlign: TextAlign.left,
+                                maxLines: null,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                             width:
                                 10), // Add spacing between the input field and icon
                         Container(

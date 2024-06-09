@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/menu-screen',
+        initialRoute: '/insider-screen',
         onGenerateRoute: RouteGenerator.generateRoute);
   }
 }

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:barfly/Storage.dart';
 import 'package:barfly/appConstants.dart';
+import 'package:barfly/responses/CreateInsiderResponse.dart';
+import 'package:barfly/responses/GetInsiderResponse.dart';
 import 'package:barfly/responses/LoginResponse.dart';
 import 'package:dio/dio.dart';
 
@@ -88,7 +90,11 @@ class apis {
       }
       return ReturnObj(message: response.data["message"], status: false);
     } on DioException catch (e) {
-      return ReturnObj(status: false, message: e.response!.data["message"]);
+      if (e.response != null) {
+        return ReturnObj(status: false, message: e.response!.data["message"]);
+      } else {
+        return ReturnObj(status: false, message: e.message!);
+      }
     } catch (error) {
       print("Error in registration $error");
       return ReturnObj(status: false, message: "Error in Registration $error");
@@ -121,6 +127,80 @@ class apis {
       return ReturnObj(message: response.data["message"], status: false);
     } on DioException catch (e) {
       return ReturnObj(status: false, message: e.response!.data["message"]);
+    } catch (error) {
+      print("Error in Login $error");
+      return ReturnObj(status: false, message: "Error in Login $error");
+    }
+  }
+
+  Future<ReturnObj<List<GetInsiderData>>> getInsiderList() async {
+    try {
+      // var headers = {'Content-Type': 'application/json'};
+      // headers['token'] = Storage.getJwtToken();
+      headers['token'] =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
+      var dio = Dio();
+      var response = await dio.request(
+        '$APIURL/api/owner/get-insider',
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        GetInsiderResponse getInsiderResponse =
+            GetInsiderResponse.fromJson(response.data);
+        return ReturnObj<List<GetInsiderData>>(
+            message: getInsiderResponse.message,
+            status: true,
+            data: getInsiderResponse.data);
+      }
+      return ReturnObj(message: response.data["message"], status: false);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return ReturnObj(status: false, message: e.response!.data["message"]);
+      } else {
+        return ReturnObj(status: false, message: e.message!);
+      }
+    } catch (error) {
+      print("Error in Login $error");
+      return ReturnObj(status: false, message: "Error in Login $error");
+    }
+  }
+
+  Future<ReturnObj<CreateInsiderData>> createInsider(
+      String insiderName, String insiderType) async {
+    try {
+      // var headers = {'Content-Type': 'application/json'};
+      // headers['token'] = Storage.getJwtToken();
+      var data =
+          json.encode({"insiderName": insiderName, "insiderType": insiderType});
+      headers['token'] =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
+      var dio = Dio();
+      var response = await dio.request('$APIURL/api/owner/insider',
+          options: Options(
+            method: 'POST',
+            headers: headers,
+          ),
+          data: data);
+
+      if (response.statusCode == 200) {
+        CreateInsiderResponse createInsiderResponse =
+            CreateInsiderResponse.fromJson(response.data);
+        return ReturnObj<CreateInsiderData>(
+            message: createInsiderResponse.message,
+            status: true,
+            data: createInsiderResponse.data);
+      }
+      return ReturnObj(message: response.data["message"], status: false);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return ReturnObj(status: false, message: e.response!.data["message"]);
+      } else {
+        return ReturnObj(status: false, message: e.message!);
+      }
     } catch (error) {
       print("Error in Login $error");
       return ReturnObj(status: false, message: "Error in Login $error");

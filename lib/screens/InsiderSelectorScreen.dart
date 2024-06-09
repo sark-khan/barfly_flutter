@@ -1,9 +1,12 @@
+import 'package:barfly/apis.dart';
 import 'package:barfly/appConstants.dart';
 import 'package:barfly/components/Buttons.dart';
+import 'package:barfly/responses/CreateInsiderResponse.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class InsiderSelectorScreen extends StatefulWidget {
-  final int? insiderCount;
+  final double? insiderCount;
 
   InsiderSelectorScreen({
     this.insiderCount = 1,
@@ -19,6 +22,16 @@ class _InsiderSelectorScreenState extends State<InsiderSelectorScreen> {
   Widget build(BuildContext context) {
     TextEditingController insiderName =
         TextEditingController(text: "Insider ${widget.insiderCount}");
+    void createNewInsider(insiderType) async {
+      ReturnObj<CreateInsiderData> response =
+          await apis().createInsider(insiderName.text, insiderType);
+      if (response.status) {
+        Navigator.pushNamed(context, "/menu-screen");
+      } else {
+        Fluttertoast.showToast(msg: response.message);
+      }
+    }
+
     return Scaffold(
       body: PopScope(
         canPop: true,
@@ -53,10 +66,10 @@ class _InsiderSelectorScreenState extends State<InsiderSelectorScreen> {
                         textAlignVertical: TextAlignVertical.center,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             color: Colors.white,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
+                          contentPadding: EdgeInsets.symmetric(
                               horizontal: 20.0, vertical: 10.0),
                         ),
                       ),
@@ -68,7 +81,7 @@ class _InsiderSelectorScreenState extends State<InsiderSelectorScreen> {
                       text: "Bar/Menu",
                       heightofButton: 150,
                       borderRadius: 30,
-                      onPressed: () => {},
+                      onPressed: () => {createNewInsider("Bar")},
                     ),
                     const SizedBox(
                       height: 20,

@@ -51,7 +51,10 @@ class RouteGenerator {
         return FadeRoute(page: InsiderScreen());
 
       case '/insider-selector-screen':
-        return FadeRoute(page: InsiderSelectorScreen());
+        return FadeRoute(
+            page: InsiderSelectorScreen(
+          insiderCount: args!["insiderCount"],
+        ));
       case '/menu-screen':
         return FadeRoute(page: MenuScreen());
       // case '/admin-notifications':

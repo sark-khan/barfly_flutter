@@ -1,7 +1,6 @@
 import 'package:barfly/appConstants.dart';
 import 'package:barfly/components/Buttons.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
 
 class MenuScreen extends StatefulWidget {
   @override
@@ -15,20 +14,22 @@ class _MenuScreenState extends State<MenuScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return PopScope(
-        canPop: true,
-        child: Stack(children: [
+      canPop: true,
+      child: Stack(
+        children: [
           Container(
             width: screenWidth,
             height: screenHeight,
             decoration: const BoxDecoration(color: APPCOLORS.backgroundColor),
-            child: Column(
+            child: SingleChildScrollView(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 80,
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text("Menu",
                         style: TextStyle(
@@ -37,29 +38,34 @@ class _MenuScreenState extends State<MenuScreen> {
                             fontSize: 30,
                             decoration: TextDecoration.none)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  MenuButton(
-                    text: "Alcohol drinks",
-                    onPressed: () => {},
-                    heightofButton: 140,
-                    widthofButton: 300,
-                    borderRadius: 20,
+                  // MenuButton(
+                  //   text: "Alcohol drinks",
+                  //   onPressed: () => {},
+                  //   heightofButton: 140,
+                  //   widthofButton: 300,
+                  //   borderRadius: 20,
+                  // ),
+                  Center(
+                    child: CustomButtonStroked(
+                      text: "+",
+                      fontSize: 60,
+                      verticalPadding: 2,
+                      widthofButton: 100,
+                      heightofButton: 100,
+                      borderRadius: 30,
+                      horizontalPadding: 2,
+                      onPressed: () => {},
+                    ),
                   ),
-                ]),
+                ],
+              ),
+            ),
           ),
-          Center(
-              child: CustomButtonStroked(
-            text: "+",
-            fontSize: 60,
-            verticalPadding: 2,
-            widthofButton: 100,
-            heightofButton: 100,
-            borderRadius: 30,
-            horizontalPadding: 2,
-            onPressed: () => {},
-          )),
-        ]));
+        ],
+      ),
+    );
   }
 }
