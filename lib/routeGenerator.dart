@@ -56,7 +56,10 @@ class RouteGenerator {
           insiderCount: args!["insiderCount"],
         ));
       case '/menu-screen':
-        return FadeRoute(page: MenuScreen());
+        return FadeRoute(
+            page: MenuScreen(
+          insiderId: args!["insiderId"],
+        ));
       // case '/admin-notifications':
       //   return MaterialPageRoute(builder: (_) => AdminNotifications());
       // case '/reset-password':

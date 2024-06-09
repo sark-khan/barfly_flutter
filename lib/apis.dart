@@ -4,6 +4,7 @@ import 'package:barfly/Storage.dart';
 import 'package:barfly/appConstants.dart';
 import 'package:barfly/responses/CreateInsiderResponse.dart';
 import 'package:barfly/responses/GetInsiderResponse.dart';
+import 'package:barfly/responses/GetMenuOfInsiderResponse.dart';
 import 'package:barfly/responses/LoginResponse.dart';
 import 'package:dio/dio.dart';
 
@@ -193,6 +194,42 @@ class apis {
             message: createInsiderResponse.message,
             status: true,
             data: createInsiderResponse.data);
+      }
+      return ReturnObj(message: response.data["message"], status: false);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return ReturnObj(status: false, message: e.response!.data["message"]);
+      } else {
+        return ReturnObj(status: false, message: e.message!);
+      }
+    } catch (error) {
+      print("Error in Login $error");
+      return ReturnObj(status: false, message: "Error in Login $error");
+    }
+  }
+
+  Future<ReturnObj<List<GetMenuOfInsderData>>> getMenuList(insiderId) async {
+    try {
+      // var headers = {'Content-Type': 'application/json'};
+      // headers['token'] = Storage.getJwtToken();
+      headers['token'] =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
+      var dio = Dio();
+      Map<String, dynamic> data = {"insiderId": insiderId};
+      var response = await dio.request('$APIURL/api/owner/get-menu-of-insider',
+          options: Options(
+            method: 'GET',
+            headers: headers,
+          ),
+          queryParameters: data);
+
+      if (response.statusCode == 200) {
+        GetMenuOfInsiderResponse getMenuofInsiderResponse =
+            GetMenuOfInsiderResponse.fromJson(response.data);
+        return ReturnObj<List<GetMenuOfInsderData>>(
+            message: getMenuofInsiderResponse.message,
+            status: true,
+            data: getMenuofInsiderResponse.data);
       }
       return ReturnObj(message: response.data["message"], status: false);
     } on DioException catch (e) {
