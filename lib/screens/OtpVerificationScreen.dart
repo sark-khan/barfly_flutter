@@ -66,7 +66,7 @@ class _OtpverificationScreenState extends State<OtpverificationScreen> {
 
     if (response.status) {
       Fluttertoast.showToast(msg: "Registration Successfull");
-      Navigator.pushNamed(context, "/insider-screen");
+      Navigator.pushNamed(context, "/login-screen");
       return;
     } else {
       Fluttertoast.showToast(msg: response.message);

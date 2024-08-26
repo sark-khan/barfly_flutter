@@ -326,27 +326,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                           width: 220,
                           child: ElevatedButton(
                             onPressed: _otpSent,
-                            // () async {
-                            // ReturnObj response =
-                            //     await apis().sendOtp(email.text);
-                            // if (response.status) {
-                            //   Navigator.pushNamed(context, "/otp-screen",
-                            //       arguments: {
-                            //         "firstName": firstName.text,
-                            //         "lastName": name.text,
-                            //         "email": email.text,
-                            //         "contactNumber": mobileNumber.text,
-                            //         "city": city.text,
-                            //         "street": street.text,
-                            //         "zipcode": zipCode.text,
-                            //         "productName": widget.productType
-                            //       });
-                            // } else {
-                            //   Fluttertoast.showToast(msg: response.message);
-                            // }
-                            // },
                             style: ElevatedButton.styleFrom(
-                                // shape: CircleBorder(eccentricity: 0.),
                                 side: const BorderSide(
                                     strokeAlign: 2, color: Colors.white),
                                 backgroundColor: Color(0xFF292c4c)),

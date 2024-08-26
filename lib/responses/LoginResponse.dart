@@ -1,13 +1,13 @@
 // To parse this JSON data, do
 //
-//     final loginResponse = loginResponseFromJson(jsonString);
+//     final loginResposne = loginResposneFromJson(jsonString);
 
 import 'dart:convert';
 
-LoginResponse loginResponseFromJson(String str) =>
+LoginResponse loginResposneFromJson(String str) =>
     LoginResponse.fromJson(json.decode(str));
 
-String loginResponseToJson(LoginResponse data) => json.encode(data.toJson());
+String loginResposneToJson(LoginResponse data) => json.encode(data.toJson());
 
 class LoginResponse {
   String message;
@@ -40,8 +40,7 @@ class UserDetails {
   String lastName;
   String email;
   String contactNumber;
-  String productName;
-  String productType;
+  EntityDetails entityDetails;
 
   UserDetails({
     required this.id,
@@ -50,8 +49,7 @@ class UserDetails {
     required this.lastName,
     required this.email,
     required this.contactNumber,
-    required this.productName,
-    required this.productType,
+    required this.entityDetails,
   });
 
   factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
@@ -61,8 +59,7 @@ class UserDetails {
         lastName: json["lastName"],
         email: json["email"],
         contactNumber: json["contactNumber"],
-        productName: json["productName"],
-        productType: json["productType"],
+        entityDetails: EntityDetails.fromJson(json["entityDetails"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -72,7 +69,30 @@ class UserDetails {
         "lastName": lastName,
         "email": email,
         "contactNumber": contactNumber,
-        "productName": productName,
-        "productType": productType,
+        "entityDetails": entityDetails.toJson(),
+      };
+}
+
+class EntityDetails {
+  String id;
+  String entityName;
+  String entityType;
+
+  EntityDetails({
+    required this.id,
+    required this.entityName,
+    required this.entityType,
+  });
+
+  factory EntityDetails.fromJson(Map<String, dynamic> json) => EntityDetails(
+        id: json["_id"],
+        entityName: json["entityName"],
+        entityType: json["entityType"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "entityName": entityName,
+        "entityType": entityType,
       };
 }

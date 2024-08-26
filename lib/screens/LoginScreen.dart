@@ -76,11 +76,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 60.0,
                               ),
                               InputField(
+                                fontWeight: FontWeight.w500,
                                 controller: emailOrContactNumber,
                                 hintText: "Enter Email/Contact Number",
                                 isPassword: false,
                               ),
                               InputField(
+                                fontWeight: FontWeight.w500,
                                 controller: password,
                                 hintText: "Enter your Password",
                                 isPassword: true,

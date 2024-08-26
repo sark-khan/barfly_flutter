@@ -12,7 +12,7 @@ String getMenuOfInsiderResponseToJson(GetMenuOfInsiderResponse data) =>
 
 class GetMenuOfInsiderResponse {
   String message;
-  List<Datum> data;
+  List<GetMenuOfInsderData> data;
 
   GetMenuOfInsiderResponse({
     required this.message,
@@ -22,7 +22,8 @@ class GetMenuOfInsiderResponse {
   factory GetMenuOfInsiderResponse.fromJson(Map<String, dynamic> json) =>
       GetMenuOfInsiderResponse(
         message: json["message"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<GetMenuOfInsderData>.from(
+            json["data"].map((x) => GetMenuOfInsderData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,7 +32,7 @@ class GetMenuOfInsiderResponse {
       };
 }
 
-class Datum {
+class GetMenuOfInsderData {
   String id;
   String name;
   String icon;
@@ -39,7 +40,7 @@ class Datum {
   List<dynamic> items;
   int v;
 
-  Datum({
+  GetMenuOfInsderData({
     required this.id,
     required this.name,
     required this.icon,
@@ -48,7 +49,8 @@ class Datum {
     required this.v,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory GetMenuOfInsderData.fromJson(Map<String, dynamic> json) =>
+      GetMenuOfInsderData(
         id: json["_id"],
         name: json["name"],
         icon: json["icon"],

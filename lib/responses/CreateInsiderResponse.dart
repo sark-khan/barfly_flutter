@@ -33,41 +33,41 @@ class CreateInsiderResponse {
 
 class CreateInsiderData {
   String id;
-  String insiderName;
-  String insiderType;
-  String ownerId;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String entityId;
+  String counterName;
   int v;
+  bool isSelfPickUp;
+  bool isTableService;
+  int totalTables;
 
   CreateInsiderData({
     required this.id,
-    required this.insiderName,
-    required this.insiderType,
-    required this.ownerId,
-    required this.createdAt,
-    required this.updatedAt,
+    required this.entityId,
+    required this.counterName,
     required this.v,
+    required this.isSelfPickUp,
+    required this.isTableService,
+    required this.totalTables,
   });
 
   factory CreateInsiderData.fromJson(Map<String, dynamic> json) =>
       CreateInsiderData(
         id: json["_id"],
-        insiderName: json["insiderName"],
-        insiderType: json["insiderType"],
-        ownerId: json["ownerId"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        entityId: json["entityId"],
+        counterName: json["counterName"],
         v: json["__v"],
+        isSelfPickUp: json["isSelfPickUp"],
+        isTableService: json["isTableService"],
+        totalTables: json["totalTables"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "insiderName": insiderName,
-        "insiderType": insiderType,
-        "ownerId": ownerId,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "entityId": entityId,
+        "counterName": counterName,
         "__v": v,
+        "isSelfPickUp": isSelfPickUp,
+        "isTableService": isTableService,
+        "totalTables": totalTables,
       };
 }

@@ -1,12 +1,12 @@
 import 'package:barfly/routeGenerator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
 // import 'package:get_storage/get_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await GetStorage.init();
+  await GetStorage.init();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/insider-screen',
+        initialRoute: '/splash-screen',
         onGenerateRoute: RouteGenerator.generateRoute);
   }
 }
