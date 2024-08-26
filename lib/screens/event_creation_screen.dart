@@ -3,6 +3,7 @@ import 'package:barfly/components/CustomText.dart';
 import 'package:barfly/controller/counter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class EventCreationScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
   final TextEditingController dateController = TextEditingController();
   final TextEditingController fromTimeController = TextEditingController();
   final TextEditingController toTimeController = TextEditingController();
+  final TextEditingController eventName = TextEditingController();
   String? selectedAge;
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -74,9 +76,6 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
-    final TextEditingController locationName = TextEditingController();
-    final TextEditingController eventName = TextEditingController();
 
     return Scaffold(
       body: PopScope(
@@ -269,11 +268,9 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 20.0),
-                                // width: 200,
-                                // height: 60,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(22),
-                                  color: Color(0x727E83A3),
+                                  color: const Color(0x727E83A3),
                                 ),
                                 child: Row(
                                   mainAxisAlignment:
@@ -313,7 +310,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                           }).toList(),
                         );
                       } else {
-                        return SizedBox();
+                        return const SizedBox();
                       }
                     }),
                     Container(
@@ -328,7 +325,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                         icon: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                                 width:
                                     8), // Adjust the width to your preference
                             Image.asset(
@@ -402,9 +399,11 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                           ),
                           child: GestureDetector(
                             onTap: () => {
-                              Navigator.pushNamed(
-                                  context, "/add-repetitive-day-screen",
-                                  arguments: {"controller": controller})
+                              Get.toNamed("/add-repetitive-day-screen",
+                                  arguments: {
+                                    "controller": controller,
+                                    "date": dateController.text
+                                  })
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -427,7 +426,16 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                       height: 8,
                     ),
                     GestureDetector(
-                      onTap: () => {},
+                      onTap: () => {
+                        if (controller.isCounterSelected())
+                          {}
+                        else
+                          {
+                            Fluttertoast.showToast(
+                                msg:
+                                    "Please select atleast one counter to create event")
+                          }
+                      },
                       child: Container(
                         width: 193,
                         height: 57,

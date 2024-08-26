@@ -22,167 +22,150 @@ import 'package:barfly/screens/live_orders_screen.dart';
 import 'package:barfly/screens/setting_screen_counter.dart';
 import 'package:barfly/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class RouteGenerator {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments as Map<String, dynamic>?;
-    switch (settings.name) {
-      case '/entry-screen':
-        return FadeRoute(
-          page: EntryScreen(),
-        );
-      case '/splash-screen':
-        return FadeRoute(
-          page: SplashScreen(),
-        );
-      case '/login-screen':
-        return FadeRoute(
-          page: LoginScreen(),
-        );
-      case '/bussiness-details-screen':
-        return FadeRoute(
-          page: BussinessDetailsScreen(),
-        );
-      // case '/account-details-screen':
-      //   return FadeRoute(page: AccountDetailsScreen());
-      case '/account-details-screen':
-        return MaterialPageRoute(
-            builder: (_) => AccountDetailsScreen(
-                  productType: args!["productType"],
-                  // isOrderPage: args["isOrderPage"],
-                ));
-      case '/otp-screen':
-        return MaterialPageRoute(
-            builder: (_) => OtpverificationScreen(
-                  productType: args!["productType"],
-                  firstName: args["firstName"],
-                  lastName: args["lastName"],
-                  email: args["email"],
-                  contactNumber: args["contactNumber"],
-                  city: args["city"],
-                  street: args["street"],
-                  zipcode: args["zipcode"],
-                  // productType: args!["productType"],
-                  productName: args!["productName"],
-                  // isOrderPage: args["isOrderPage"],
-                ));
-      case '/insider-screen':
-        return FadeRoute(page: InsiderScreen());
+class AppRoutes {
+  static final routes = [
+    GetPage(
+      name: '/entry-screen',
+      page: () => EntryScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/splash-screen',
+      page: () => SplashScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/login-screen',
+      page: () => LoginScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/bussiness-details-screen',
+      page: () => BussinessDetailsScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/account-details-screen',
+      page: () => AccountDetailsScreen(
+        productType: Get.arguments["productType"],
+        // Uncomment or add any additional parameters if needed
+      ),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/otp-screen',
+      page: () => OtpverificationScreen(
+        productType: Get.arguments["productType"],
+        firstName: Get.arguments["firstName"],
+        lastName: Get.arguments["lastName"],
+        email: Get.arguments["email"],
+        contactNumber: Get.arguments["contactNumber"],
+        city: Get.arguments["city"],
+        street: Get.arguments["street"],
+        zipcode: Get.arguments["zipcode"],
+        productName: Get.arguments["productName"],
+      ),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/insider-screen',
+      page: () => InsiderScreen(),
+      transition: Transition.fade,
+    ),
+    // GetPage(
+    //   name: '/insider-selector-screen',
+    //   page: () => InsiderSelectorScreen(
+    //     insiderCount: Get.arguments?["insiderCount"] ?? 1,
+    //   ),
+    //   transition: Transition.fade,
+    // ),
+    GetPage(
+      name: '/add-quantity-screen',
+      page: () => AddQuantityItemsScreen(
+        itemId: "66c1df98b19ea52d2989633a",
+        nameOfItem: "French Fries",
+      ),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/counter-settings-screen',
+      page: () => SettingScreenCounter(
+        isFirstTime: Get.arguments["isFirstTime"],
+        counterId: Get.arguments["counterId"],
+      ),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/menu-screen',
+      page: () => MenuScreen(
+        insiderId: Get.arguments?["insiderId"],
+        counterName: Get.arguments?["counterName"],
+      ),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/menu-item-screen',
+      page: () => MenuItemScreen(
+        menuId: Get.arguments["menuId"],
+        nameOfMenu: Get.arguments["nameOfMenu"],
+      ),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/new-item-menu',
+      page: () => AddNewItemInMenuScreen(
+        menuCategoryId: Get.arguments["menuCategoryId"],
+        menuCategoryName: Get.arguments["menuCategoryName"],
+        itemId: Get.arguments["itemId"],
+      ),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/home-screen',
+      page: () => HomeScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/past-events',
+      page: () => PastEventsScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/upcoming-events',
+      page: () => UpcomingEventsScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/event-creation',
+      page: () => EventCreationScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/live-orders',
+      page: () => LiveOrdersScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: '/add-repetitive-day-screen',
+      page: () => AddRepetitiveScreen(
+        controller: Get.arguments["controller"],
+        date: Get.arguments["date"],
+      ),
+      transition: Transition.fade,
+    ),
+  ];
 
-      case '/insider-selector-screen':
-      // return FadeRoute(
-      //     page: InsiderSelectorScreen(
-      //   insiderCount: args?["insiderCount"] ?? 1,
-      // ));
-
-      case '/add-quantity-screen':
-        return FadeRoute(
-            page: const AddQuantityItemsScreen(
-          itemId: "66c1df98b19ea52d2989633a",
-          nameOfItem: "French Fries",
-        ));
-
-      case '/counter-settings-screen':
-        return FadeRoute(
-            page: SettingScreenCounter(
-          isFirstTime: args!["isFirstTime"],
-          counterId: args["counterId"],
-        ));
-      case '/menu-screen':
-        String? insiderId = args?["insiderId"] as String?;
-        if (insiderId == null) {
-          return FadeRoute(page: const MenuScreen());
-        }
-        return FadeRoute(
-            page: MenuScreen(
-          insiderId: args!["insiderId"],
-          counterName: args!["counterName"],
-        ));
-      case '/menu-item-screen':
-        return FadeRoute(
-            page: MenuItemScreen(
-          menuId: args!["menuId"],
-          nameOfMenu: args["nameOfMenu"],
-        ));
-
-      case '/new-item-menu':
-        return FadeRoute(
-            page: AddNewItemInMenuScreen(
-                menuCategoryId: args!["menuCategoryId"],
-                menuCategoryName: args["menuCategoryName"],
-                itemId: args["itemId"]));
-
-      case '/home-screen':
-        return FadeRoute(
-            page: HomeScreen(
-                // menuId: args!["menuId"],
-                // menuName: args["menuName"],
-                ));
-      case '/past-events':
-        return FadeRoute(
-            page: PastEventsScreen(
-                // menuId: args!["menuId"],
-                // menuName: args["menuName"],
-                ));
-
-      case '/upcoming-events':
-        return FadeRoute(page: UpcomingEventsScreen());
-      // case '/add-quantity-menu-items':
-      //   return FadeRoute(
-      //       page: AddQuantityItemsScreen(
-      //     menuId: 'args!["menuId"]',
-      //     nameOfMenu: 'args["menuName"]',
-      //   ));
-
-      case '/event-creation':
-        return FadeRoute(page: const EventCreationScreen());
-
-      case '/live-orders':
-        return FadeRoute(page: LiveOrdersScreen());
-      // return FadeRoute(page: EventCreationScreen());
-      case '/add-repetitive-day-screen':
-        return FadeRoute(
-            page: AddRepetitiveScreen(
-          controller: args!["controller"],
-        ));
-    }
-    return _errorRoute();
-  }
-
-  static Route<dynamic> _errorRoute() {
-    return MaterialPageRoute(builder: (_) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Error'),
-        ),
-        body: Center(
-          child: Text('ERROR'),
-        ),
-      );
-    });
-  }
-}
-
-class FadeRoute extends PageRouteBuilder {
-  final Widget page;
-
-  FadeRoute({required this.page})
-      : super(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) =>
-              page,
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
-        );
+  static GetPage<dynamic> unknownRoute = GetPage(
+    name: '/error',
+    page: () => Scaffold(
+      appBar: AppBar(
+        title: Text('Error'),
+      ),
+      body: Center(
+        child: Text('ERROR: Page not found'),
+      ),
+    ),
+  );
 }

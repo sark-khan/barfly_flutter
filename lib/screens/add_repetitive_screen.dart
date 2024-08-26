@@ -8,8 +8,10 @@ import 'package:get/get.dart';
 
 class AddRepetitiveScreen extends StatefulWidget {
   final CounterListController controller;
+  final String? date;
   const AddRepetitiveScreen({
     required this.controller,
+    this.date,
     super.key,
   });
 
@@ -18,17 +20,19 @@ class AddRepetitiveScreen extends StatefulWidget {
 }
 
 class _AddRepetitiveScreenState extends State<AddRepetitiveScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   DateTime? _selectedFromDate;
   DateTime? _selectedToDate;
 
-  final TextEditingController fromDateController = TextEditingController();
+  late TextEditingController fromDateController = TextEditingController();
+
   final TextEditingController toDateController = TextEditingController();
   String? selectedAge;
+  @override
+  void initState() {
+    super.initState();
+    fromDateController.text = widget.date!;
+  }
+
   Future<void> _selectFromDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,

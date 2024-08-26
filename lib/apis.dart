@@ -440,8 +440,8 @@ class apis {
       //   "image": "hehe",
       //   "type": "Drink"
       // });
-      headers['token'] =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
+      // headers['token'] =
+      //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
       var dio = Dio();
       var response = await dio.request('$APIURL/api/owner/create-event',
           options: Options(
@@ -452,12 +452,6 @@ class apis {
 
       if (response.statusCode == 200) {
         return ReturnObj(message: "Event Created Successfully", status: true);
-        // CreateMenuOfInsiderResponse createMenuOfInsiderResponse =
-        //     CreateMenuOfInsiderResponse.fromJson(response.data);
-        // return ReturnObj<CreateMenuOfInsiderData>(
-        //     message: createMenuOfInsiderResponse.message,
-        //     status: true,
-        //     data: createMenuOfInsiderResponse.data);
       }
       return ReturnObj(message: response.data["message"], status: false);
     } on DioException catch (e) {

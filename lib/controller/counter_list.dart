@@ -2,6 +2,7 @@ import 'package:barfly/apis.dart';
 import 'package:barfly/responses/GetCounterResponse.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class CounterListController extends GetxController {
   var counterList = <Counter>[].obs;
@@ -80,6 +81,31 @@ class CounterListController extends GetxController {
 
     repetitiveDays[5] = val;
     repetitiveDays[6] = val;
+  }
+
+  bool isCounterSelected() =>
+      counterSelected.values.any((value) => value == true);
+
+  Future<ReturnObj> submitEvent(String selectedDate, String from, String to,
+      String eventName, String selectedAge) async {
+    isLoading.value = true;
+    var data = {
+      "eventName": eventName,
+      "startingDate": fromDate.value,
+      "endDate": toDate.value,
+      "isRepitative": isRepetitive.value,
+      "repetitiveDays": daysMapping.toList(),
+      "from": from,
+      "to": to,
+      "counterIds": counterSelected.entries
+          .where((entry) => entry.value) // Filter entries where value is true
+          .map((entry) => entry.key) // Map to the keys
+          .toList(),
+      "ageLimit": selectedAge,
+    };
+    ReturnObj res = await apis().createEvent(data);
+    isLoading.value = false;
+    return res;
   }
 
   Future<void> fetchCounter() async {
