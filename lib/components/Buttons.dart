@@ -1,4 +1,5 @@
 import 'package:barfly/appConstants.dart';
+import 'package:barfly/commonFunction.dart';
 import 'package:barfly/components/CustomText.dart';
 import 'package:barfly/responses/GetOrderDetails.dart';
 import 'package:flutter/material.dart';
@@ -960,8 +961,7 @@ class EventsButton extends StatelessWidget {
   }
 }
 
-class PastEvents extends StatelessWidget {
-  final String monthName;
+class PastEventsYearButton extends StatelessWidget {
   final String year;
   final VoidCallback onPressed;
   final Color textColor;
@@ -974,10 +974,9 @@ class PastEvents extends StatelessWidget {
   final double horizontalPadding;
   final double fontSize;
 
-  const PastEvents({
+  const PastEventsYearButton({
     Key? key,
     required this.onPressed,
-    required this.monthName,
     required this.year,
     this.heightofButton = 70,
     this.widthofButton = 240,
@@ -1008,27 +1007,10 @@ class PastEvents extends StatelessWidget {
                 Positioned.fill(
                   child: Container(
                     decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [
-                          Color(0xFF555986), // hsl(246deg 36% 39%)
-                          Color(0xFF4A5B94), // hsl(234deg 39% 40%)
-                          Color(0xFF3E5CA3), // hsl(222deg 40% 41%)
-                          Color(0xFF3366B2), // hsl(210deg 43% 43%)
-                          Color(0xFF2A6DB3), // hsl(199deg 45% 44%)
-                          Color(0xFF2182B6), // hsl(187deg 47% 45%)
-                          Color(0xFF1A93B8), // hsl(175deg 50% 46%)
-                        ],
-                        stops: [
-                          0.0,
-                          0.17,
-                          0.33,
-                          0.5,
-                          0.67,
-                          0.83,
-                          1.0,
-                        ],
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF3BAFA6), Color(0xFF473F88)],
+                        begin: Alignment.centerRight,
+                        end: Alignment.centerLeft,
                       ),
                     ),
                   ),
@@ -1037,49 +1019,451 @@ class PastEvents extends StatelessWidget {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: onPressed,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 50.0, top: 20, bottom: 20, right: 30),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        year,
+                        style: TextStyle(
+                            fontFamily: "Helvetica",
+                            color: textColor,
+                            fontSize: fontSize,
+                            fontWeight: FontWeight.w700,
+                            decoration: TextDecoration.none,
+                            height: 2.2),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class PastEventsMonthlyDetails extends StatelessWidget {
+  final String eventName;
+  final String date;
+  final String totalOrders;
+  final String totalAmount;
+  final VoidCallback onPressed;
+  final Color textColor;
+  final Color buttonBackgroundColor;
+  final double heightofButton;
+  final double widthofButton;
+  final double borderRadius;
+  final FontWeight fontWeight;
+  final double verticalPadding;
+  final double horizontalPadding;
+  final double fontSize;
+
+  const PastEventsMonthlyDetails({
+    super.key,
+    required this.onPressed,
+    required this.eventName,
+    required this.date,
+    required this.totalOrders,
+    required this.totalAmount,
+    this.heightofButton = 70,
+    this.widthofButton = 240,
+    this.fontSize = 28,
+    this.textColor = Colors.white,
+    this.borderRadius = 22.0,
+    this.fontWeight = FontWeight.w300,
+    this.verticalPadding = 15.0,
+    this.horizontalPadding = 25.0,
+    this.buttonBackgroundColor =
+        const Color(0xFF3ab0a6), // Updated with a default color
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: widthofButton,
+      child: IntrinsicHeight(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(borderRadius),
+          child: Stack(
+            children: [
+              // Gradient background
+              Positioned.fill(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF3BAFA6), Color(0xFF473F88)],
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
+                    ),
+                  ),
+                ),
+              ),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                    onTap: onPressed,
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                          top: 20, bottom: 15, left: 25, right: 25),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: CustomText(
+                                    text: eventName,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: CustomText(
+                                    text: formatDateString(date),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                "Ticket.svg",
+                                width: 17.4,
+                                height: 20.4,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(width: 10),
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                child: CustomText(
+                                  text: totalOrders,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          CustomText(
+                            text: "CHF $totalAmount",
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                          )
+                        ],
+                      ),
+                    )),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class OngoingEventDetailsButton extends StatelessWidget {
+  final String eventName;
+  final String date;
+  final String totalOrders;
+  final String activeUsers;
+  final VoidCallback onPressed;
+  final Color textColor;
+  final Color buttonBackgroundColor;
+  final double heightofButton;
+  final double widthofButton;
+  final double borderRadius;
+  final FontWeight fontWeight;
+  final double verticalPadding;
+  final double horizontalPadding;
+  final double fontSize;
+
+  const OngoingEventDetailsButton({
+    super.key,
+    required this.onPressed,
+    required this.eventName,
+    required this.date,
+    required this.totalOrders,
+    required this.activeUsers,
+    this.heightofButton = 70,
+    this.widthofButton = 240,
+    this.fontSize = 28,
+    this.textColor = Colors.white,
+    this.borderRadius = 22.0,
+    this.fontWeight = FontWeight.w300,
+    this.verticalPadding = 15.0,
+    this.horizontalPadding = 25.0,
+    this.buttonBackgroundColor =
+        const Color(0xFF3ab0a6), // Updated with a default color
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return SizedBox(
+          width: constraints.maxWidth < widthofButton
+              ? constraints.maxWidth
+              : widthofButton,
+          child: IntrinsicHeight(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(borderRadius),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFFC43A64), Color(0xFF621D32)],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                        onTap: onPressed,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 20, bottom: 15, left: 25, right: 25),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: CustomText(
+                                      text: eventName,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w700,
+                                      textAlign: TextAlign.start,
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    flex: 1,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(
+                                          Icons.circle,
+                                          color: Colors.white,
+                                          size: 14,
+                                        ),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        CustomText(
+                                          text: "Live",
+                                          fontSize: 23,
+                                          fontWeight: FontWeight.w300,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "Human.svg",
+                                    width: 20.17,
+                                    height: 35.37,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4),
+                                    child: CustomText(
+                                      text: activeUsers,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 27,
+                                  ),
+                                  SvgPicture.asset(
+                                    "Ticket.svg",
+                                    width: 17.4,
+                                    height: 20.4,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4),
+                                    child: CustomText(
+                                      text: totalOrders,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              CustomText(
+                                text: date,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              )
+                            ],
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class PastEventsMonth extends StatelessWidget {
+  final String monthName;
+  final String year;
+  final VoidCallback onPressed;
+  final Color textColor;
+  final Color buttonBackgroundColor;
+  final double heightofButton;
+  final double widthofButton;
+  final double borderRadius;
+  final FontWeight fontWeight;
+  final double verticalPadding;
+  final double horizontalPadding;
+  final double fontSize;
+
+  const PastEventsMonth({
+    super.key,
+    required this.onPressed,
+    required this.monthName,
+    required this.year,
+    this.heightofButton = 70,
+    this.widthofButton = 240,
+    this.fontSize = 28,
+    this.textColor = Colors.white,
+    this.borderRadius = 8.0,
+    this.fontWeight = FontWeight.w300,
+    this.verticalPadding = 15.0,
+    this.horizontalPadding = 25.0,
+    this.buttonBackgroundColor =
+        const Color(0xFF3ab0a6), // Updated with a default color
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return SizedBox(
+          width: constraints.maxWidth < widthofButton
+              ? constraints.maxWidth
+              : widthofButton,
+          height: heightofButton,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(borderRadius),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF3BAFA6), Color(0xFF473F88)],
+                        begin: Alignment.centerRight,
+                        end: Alignment.centerLeft,
+                      ),
+                    ),
+                  ),
+                ),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: onPressed,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
                             child: Text(
                               year,
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: textColor,
-                                    fontSize: fontSize,
-                                    fontWeight: FontWeight.w700,
-                                    decoration: TextDecoration.none,
-                                    height: 1.1),
-                              ),
+                              style: TextStyle(
+                                  fontFamily: "Helvetica",
+                                  color: textColor,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700,
+                                  decoration: TextDecoration.none,
+                                  height: 1.3),
                               textAlign: TextAlign.start,
                             ),
                           ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 16, bottom: 16, right: 30, left: 30),
+                          const SizedBox(
+                            width: 30,
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 0),
                             child: Text(
                               monthName,
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: textColor,
-                                    fontSize: fontSize,
-                                    fontWeight: fontWeight,
-                                    decoration: TextDecoration.none,
-                                    height: 1.1),
-                              ),
+                              maxLines: null,
+                              style: TextStyle(
+                                  fontFamily: "Helvetica",
+                                  color: textColor,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w200,
+                                  decoration: TextDecoration.none,
+                                  height: 1.1),
+                              softWrap: true,
                               textAlign: TextAlign.start,
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -1108,7 +1492,7 @@ class UpcomingEvents extends StatelessWidget {
   final double fontSize;
 
   const UpcomingEvents({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.eventName,
     required this.date,
@@ -1123,7 +1507,7 @@ class UpcomingEvents extends StatelessWidget {
     this.horizontalPadding = 25.0,
     this.buttonBackgroundColor =
         const Color(0xFF3ab0a6), // Updated with a default color
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1142,11 +1526,8 @@ class UpcomingEvents extends StatelessWidget {
                 Positioned.fill(
                   child: Container(
                     decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 42, 240, 194),
-                          Color(0xFF3ab0a6)
-                        ],
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF16DBAD), Color(0xFF3BAFA6)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -1169,26 +1550,14 @@ class UpcomingEvents extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 text: TextSpan(children: [
                                   TextSpan(
-                                    text: 'XTRA ',
-                                    style: GoogleFonts.roboto(
-                                      textStyle: TextStyle(
-                                          color: textColor,
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w700,
-                                          decoration: TextDecoration.none,
-                                          height: 1.1),
-                                    ),
-                                  ),
-                                  TextSpan(
                                     text: eventName,
-                                    style: GoogleFonts.roboto(
-                                      textStyle: TextStyle(
-                                          color: textColor,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          decoration: TextDecoration.none,
-                                          height: 1.1),
-                                    ),
+                                    style: TextStyle(
+                                        fontFamily: "Helvetica",
+                                        color: textColor,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        decoration: TextDecoration.none,
+                                        height: 1.1),
                                   ),
                                 ])),
                           ),
@@ -1200,14 +1569,13 @@ class UpcomingEvents extends StatelessWidget {
                                 top: 5, bottom: 0, right: 5, left: 20),
                             child: Text(
                               date,
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: textColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                    decoration: TextDecoration.none,
-                                    height: 1.1),
-                              ),
+                              style: TextStyle(
+                                  fontFamily: "Helvetica",
+                                  color: textColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  decoration: TextDecoration.none,
+                                  height: 1.1),
                               textAlign: TextAlign.start,
                             ),
                           ),
@@ -1219,14 +1587,13 @@ class UpcomingEvents extends StatelessWidget {
                                 top: 5, bottom: 16, right: 5, left: 20),
                             child: Text(
                               timeRange,
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: textColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                    decoration: TextDecoration.none,
-                                    height: 1.1),
-                              ),
+                              style: TextStyle(
+                                  fontFamily: "Helvetica",
+                                  color: textColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  decoration: TextDecoration.none,
+                                  height: 1.1),
                               textAlign: TextAlign.start,
                             ),
                           ),

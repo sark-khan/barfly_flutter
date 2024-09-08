@@ -7,9 +7,12 @@ import 'package:barfly/responses/CreateInsiderResponse.dart';
 import 'package:barfly/responses/CreateMenuOfInsiderResponse.dart';
 import 'package:barfly/responses/GetCounterResponse.dart';
 import 'package:barfly/responses/GetCounterSettings.dart';
+import 'package:barfly/responses/GetEventMonthlyDetailsResponse.dart';
 import 'package:barfly/responses/GetItemsOfMenuResponse.dart';
 import 'package:barfly/responses/GetMenuCategoryResponse.dart';
+import 'package:barfly/responses/GetOngoingEventDetails.dart';
 import 'package:barfly/responses/GetOrderDetails.dart';
+import 'package:barfly/responses/GetPastEventsMontsOfYear.dart';
 import 'package:barfly/responses/GetPastEventsResponse.dart';
 import 'package:barfly/responses/GetUpcomingEventsResponse.dart';
 import 'package:barfly/responses/LoginResponse.dart';
@@ -17,7 +20,6 @@ import 'package:barfly/responses/get_particular_order_resposne.dart';
 import 'package:barfly/screens/GetCounterListQuantity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
 
 class apis {
   static Dio dio = Dio();
@@ -467,12 +469,12 @@ class apis {
     }
   }
 
-  Future<ReturnObj<List<GetUpcomingEvents>>> GetUpcomingEventsApi() async {
+  Future<ReturnObj<List<UpcomingEvent>>> GetUpcomingEventsApi() async {
     try {
       // var headers = {'Content-Type': 'application/json'};
       headers['token'] = Storage.getJwtToken();
-      headers['token'] =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
+      // headers['token'] =
+      //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
       var dio = Dio();
       var response = await dio.request(
         '$APIURL/api/owner/get-upcoming-events',
@@ -485,10 +487,10 @@ class apis {
       if (response.statusCode == 200) {
         GetUpcomingEventsResponse getUpcomingEventsResponse =
             GetUpcomingEventsResponse.fromJson(response.data);
-        return ReturnObj<List<GetUpcomingEvents>>(
+        return ReturnObj<List<UpcomingEvent>>(
             message: getUpcomingEventsResponse.message,
             status: true,
-            data: getUpcomingEventsResponse.data);
+            data: getUpcomingEventsResponse.upcomingEvents);
       }
       return ReturnObj(message: response.data["message"], status: false);
     } on DioException catch (e) {
@@ -503,15 +505,15 @@ class apis {
     }
   }
 
-  Future<ReturnObj<List<GetPastEvents>>> GetPastEventsApi() async {
+  Future<ReturnObj<List<PastEventsYear>>> GetPastEventsApi() async {
     try {
       // var headers = {'Content-Type': 'application/json'};
       headers['token'] = Storage.getJwtToken();
-      headers['token'] =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
+      // headers['token'] =
+      //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
       var dio = Dio();
       var response = await dio.request(
-        '$APIURL/api/owner/get-past-events-months',
+        '$APIURL/api/owner/get-past-events-years',
         options: Options(
           method: 'GET',
           headers: headers,
@@ -519,12 +521,86 @@ class apis {
       );
 
       if (response.statusCode == 200) {
-        GetPastEventsResponse getPastEventsResponse =
-            GetPastEventsResponse.fromJson(response.data);
-        return ReturnObj<List<GetPastEvents>>(
+        GetPastEventsYearResponse getPastEventsResponse =
+            GetPastEventsYearResponse.fromJson(response.data);
+        return ReturnObj<List<PastEventsYear>>(
             message: getPastEventsResponse.message,
             status: true,
-            data: getPastEventsResponse.data);
+            data: getPastEventsResponse.pastEventsYear);
+      }
+      return ReturnObj(message: response.data["message"], status: false);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return ReturnObj(status: false, message: e.response!.data["message"]);
+      } else {
+        return ReturnObj(status: false, message: e.message!);
+      }
+    } catch (error) {
+      print("Error in Login $error");
+      return ReturnObj(status: false, message: "Error in Login $error");
+    }
+  }
+
+  Future<ReturnObj<List<PastEventsMonths>>> getPastEventsMonths(
+      String year) async {
+    try {
+      // var headers = {'Content-Type': 'application/json'};
+      headers['token'] = Storage.getJwtToken();
+      // headers['token'] =
+      //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
+      var dio = Dio();
+      var response =
+          await dio.request('$APIURL/api/owner/get-past-events-year-month',
+              options: Options(
+                method: 'GET',
+                headers: headers,
+              ),
+              queryParameters: {"year": year});
+
+      if (response.statusCode == 200) {
+        GetPastEventsMonthsResponse getPastEventsResponse =
+            GetPastEventsMonthsResponse.fromJson(response.data);
+        return ReturnObj<List<PastEventsMonths>>(
+            message: getPastEventsResponse.message,
+            status: true,
+            data: getPastEventsResponse.pastEventsMonths);
+      }
+      return ReturnObj(message: response.data["message"], status: false);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return ReturnObj(status: false, message: e.response!.data["message"]);
+      } else {
+        return ReturnObj(status: false, message: e.message!);
+      }
+    } catch (error) {
+      print("Error in Login $error");
+      return ReturnObj(status: false, message: "Error in Login $error");
+    }
+  }
+
+  Future<ReturnObj<List<MonthlyEventDetail>>> getEventsMonthlyDetails(
+      String year, String month) async {
+    try {
+      // var headers = {'Content-Type': 'application/json'};
+      headers['token'] = Storage.getJwtToken();
+      // headers['token'] =
+      //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjQ3OTllODY5ZmViOGU0NjY4ZWIxZCIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiam9obkBjZW5hLmNvbSIsImNvbnRhY3ROdW1iZXIiOiIxMjM0NTY3ODkwIiwicHJvZHVjdE5hbWUiOiJjbHViIGhvdXNlIiwicHJvZHVjdFR5cGUiOiJDbHViIiwiaWF0IjoxNzE3OTQ0MjEwfQ.GmhSDjtb3ksiMwTvGSKYUEq5SWC88Dzs7ilpCAFo7Q0";
+      var dio = Dio();
+      var response =
+          await dio.request('$APIURL/api/owner/get-event-details-monthly',
+              options: Options(
+                method: 'GET',
+                headers: headers,
+              ),
+              queryParameters: {"year": year, "month": month});
+
+      if (response.statusCode == 200) {
+        GetPastEventsDetailsMonthsResponse getPastEventsResponse =
+            GetPastEventsDetailsMonthsResponse.fromJson(response.data);
+        return ReturnObj<List<MonthlyEventDetail>>(
+            message: getPastEventsResponse.message,
+            status: true,
+            data: getPastEventsResponse.monthlyEventDetails);
       }
       return ReturnObj(message: response.data["message"], status: false);
     } on DioException catch (e) {
@@ -544,8 +620,8 @@ class apis {
     try {
       // var headers = {'Content-Type': 'application/json'};
       headers['token'] = Storage.getJwtToken();
-      headers['token'] =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTdjNTAyZDBjMjgxMmU0ZTFhYTU1MyIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiZGVlcGFrMTIzNEBvd25lci5jb20iLCJjb250YWN0TnVtYmVyIjoiMTIzNDU2Nzg5MCIsImVudGl0eU5hbWUiOiJZb3VyIEVudGl0eSBOYW1lIiwiZW50aXR5VHlwZSI6IkJhciIsImVudGl0eUlkIjoiNjY5N2M1MDJkMGMyODEyZTRlMWFhNTU0IiwiaWF0IjoxNzIyNzU4MjIzfQ.Gz6kIes_elkvlJvrSWDTkjMaiSKcUtyackeTICzdU-0";
+      // headers['token'] =
+      //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTdjNTAyZDBjMjgxMmU0ZTFhYTU1MyIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiZGVlcGFrMTIzNEBvd25lci5jb20iLCJjb250YWN0TnVtYmVyIjoiMTIzNDU2Nzg5MCIsImVudGl0eU5hbWUiOiJZb3VyIEVudGl0eSBOYW1lIiwiZW50aXR5VHlwZSI6IkJhciIsImVudGl0eUlkIjoiNjY5N2M1MDJkMGMyODEyZTRlMWFhNTU0IiwiaWF0IjoxNzIyNzU4MjIzfQ.Gz6kIes_elkvlJvrSWDTkjMaiSKcUtyackeTICzdU-0";
       var dio = Dio();
       var response =
           await dio.request('$APIURL/api/owner/get-counter-list-quantity',
@@ -571,7 +647,7 @@ class apis {
         return ReturnObj(status: false, message: e.message!);
       }
     } catch (error) {
-      print("Error in Login $error");
+      print("Error in gt counter list quantity ${error.toString()}");
       return ReturnObj(status: false, message: "Error in Login $error");
     }
   }
@@ -581,8 +657,8 @@ class apis {
     try {
       // var headers = {'Content-Type': 'application/json'};
       headers['token'] = Storage.getJwtToken();
-      headers['token'] =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTdjNTAyZDBjMjgxMmU0ZTFhYTU1MyIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiZGVlcGFrMTIzNEBvd25lci5jb20iLCJjb250YWN0TnVtYmVyIjoiMTIzNDU2Nzg5MCIsImVudGl0eU5hbWUiOiJZb3VyIEVudGl0eSBOYW1lIiwiZW50aXR5VHlwZSI6IkJhciIsImVudGl0eUlkIjoiNjY5N2M1MDJkMGMyODEyZTRlMWFhNTU0IiwiaWF0IjoxNzIyNzU4MjIzfQ.Gz6kIes_elkvlJvrSWDTkjMaiSKcUtyackeTICzdU-0";
+      // headers['token'] =
+      //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTdjNTAyZDBjMjgxMmU0ZTFhYTU1MyIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiZGVlcGFrMTIzNEBvd25lci5jb20iLCJjb250YWN0TnVtYmVyIjoiMTIzNDU2Nzg5MCIsImVudGl0eU5hbWUiOiJZb3VyIEVudGl0eSBOYW1lIiwiZW50aXR5VHlwZSI6IkJhciIsImVudGl0eUlkIjoiNjY5N2M1MDJkMGMyODEyZTRlMWFhNTU0IiwiaWF0IjoxNzIyNzU4MjIzfQ.Gz6kIes_elkvlJvrSWDTkjMaiSKcUtyackeTICzdU-0";
       var dio = Dio();
       var response = await dio.request('$APIURL/api/owner/get-counter-settings',
           options: Options(
@@ -714,6 +790,45 @@ class apis {
             message: getOrdersEntityResponse.message,
             status: true,
             data: getOrdersEntityResponse.orderDetails);
+      }
+      return ReturnObj(message: response.data["message"], status: false);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return ReturnObj(status: false, message: e.response!.data["message"]);
+      } else {
+        return ReturnObj(status: false, message: e.message!);
+      }
+    } catch (error) {
+      print("Error in Login $error");
+      return ReturnObj(status: false, message: "Error in Login $error");
+    }
+  }
+
+  Future<ReturnObj<Map<String, OngoingEventDetail>>>
+      getOngoingEventDetails() async {
+    try {
+      // var headers = {'Content-Type': 'application/json'};
+      headers['token'] = Storage.getJwtToken();
+      // headers['token'] =
+      //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTdjNTAyZDBjMjgxMmU0ZTFhYTU1MyIsInJvbGUiOiJPd25lciIsImVtYWlsIjoiZGVlcGFrMTIzNEBvd25lci5jb20iLCJjb250YWN0TnVtYmVyIjoiMTIzNDU2Nzg5MCIsImVudGl0eU5hbWUiOiJZb3VyIEVudGl0eSBOYW1lIiwiZW50aXR5VHlwZSI6IkJhciIsImVudGl0eUlkIjoiNjY5N2M1MDJkMGMyODEyZTRlMWFhNTU0IiwiaWF0IjoxNzI0MDgyNjAzfQ.EdDBMcLe8Rvb6XK2_8zKAW-N-d8M6ua9cmacGgonLYM";
+      var dio = Dio();
+      // Map<String, dynamic> data = {"status": "Waiting"};
+      var response = await dio.request(
+        '$APIURL/api/owner/get-ongoing-event-details',
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+        // queryParameters: data
+      );
+
+      if (response.statusCode == 200) {
+        OngoingEventDetailsResponse ongoingEventDetailsResponse =
+            OngoingEventDetailsResponse.fromJson(response.data);
+        return ReturnObj<Map<String, OngoingEventDetail>>(
+            message: ongoingEventDetailsResponse.message,
+            status: true,
+            data: ongoingEventDetailsResponse.ongoingEventDetails);
       }
       return ReturnObj(message: response.data["message"], status: false);
     } on DioException catch (e) {

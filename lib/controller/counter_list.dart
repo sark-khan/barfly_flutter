@@ -1,4 +1,5 @@
 import 'package:barfly/apis.dart';
+import 'package:barfly/commonFunction.dart';
 import 'package:barfly/responses/GetCounterResponse.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -50,6 +51,7 @@ class CounterListController extends GetxController {
   }
 
   ReturnObj submitValue() {
+    print("${fromDate.value} fromDate ${toDate.value} toDate");
     if (fromDate.value == "" || toDate.value == "") {
       return ReturnObj(
           message: "Please select to and from Date", status: false);
@@ -86,17 +88,35 @@ class CounterListController extends GetxController {
   bool isCounterSelected() =>
       counterSelected.values.any((value) => value == true);
 
-  Future<ReturnObj> submitEvent(String selectedDate, String from, String to,
+  Future<void> submitEvent(String selectedDate, String from, String to,
       String eventName, String selectedAge) async {
+    if (isLoading.value) return;
+    if (selectedDate.isEmpty ||
+        from.isEmpty ||
+        to.isEmpty ||
+        eventName.isEmpty ||
+        selectedAge.isEmpty) {
+      Fluttertoast.showToast(msg: "Please fill all the required details");
+      return;
+    }
+    Map<String, String> dateObj;
     isLoading.value = true;
+
+    if (isRepetitive.value) {
+      dateObj = createDateTimeObjects(fromDate.value, from, to, toDate.value);
+    } else {
+      dateObj = createDateTimeObjects(selectedDate, from, to, selectedDate);
+      // toDate.value = selectedDate;
+      // fromDate.value = selectedDate;
+    }
     var data = {
       "eventName": eventName,
-      "startingDate": fromDate.value,
-      "endDate": toDate.value,
-      "isRepitative": isRepetitive.value,
-      "repetitiveDays": daysMapping.toList(),
-      "from": from,
-      "to": to,
+      "startingDate": isRepetitive.value ? fromDate.value : selectedDate,
+      "endDate": isRepetitive.value ? toDate.value : selectedDate,
+      "isRepetitive": isRepetitive.value,
+      "repetitiveDays": repetitiveDays.toList(),
+      "from": dateObj["fromDateTime"],
+      "to": dateObj["toDateTime"],
       "counterIds": counterSelected.entries
           .where((entry) => entry.value) // Filter entries where value is true
           .map((entry) => entry.key) // Map to the keys
@@ -104,8 +124,11 @@ class CounterListController extends GetxController {
       "ageLimit": selectedAge,
     };
     ReturnObj res = await apis().createEvent(data);
+    Fluttertoast.showToast(msg: res.message);
     isLoading.value = false;
-    return res;
+    if (res.status) {
+      Get.toNamed("/home-screen");
+    }
   }
 
   Future<void> fetchCounter() async {

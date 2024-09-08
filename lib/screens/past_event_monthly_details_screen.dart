@@ -1,26 +1,29 @@
 import 'package:barfly/apis.dart';
 import 'package:barfly/appConstants.dart';
 import 'package:barfly/components/Buttons.dart';
-import 'package:barfly/responses/GetPastEventsResponse.dart';
-
+import 'package:barfly/responses/GetEventMonthlyDetailsResponse.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class PastEventsScreen extends StatefulWidget {
-  const PastEventsScreen({
+class PastEventMonthlyDetailsScreen extends StatefulWidget {
+  final String year;
+  final String month;
+  const PastEventMonthlyDetailsScreen({
+    required this.year,
+    required this.month,
     super.key,
   });
 
   @override
-  State createState() => _PastEventsScreenState();
+  State createState() => _PastEventMonthlyDetailsScreenState();
 }
 
-class _PastEventsScreenState extends State<PastEventsScreen> {
+class _PastEventMonthlyDetailsScreenState
+    extends State<PastEventMonthlyDetailsScreen> {
   late Future<dynamic> futureData;
   @override
   void initState() {
     super.initState();
-    futureData = apis().GetPastEventsApi();
+    futureData = apis().getEventsMonthlyDetails(widget.year, widget.month);
   }
 
   @override
@@ -46,7 +49,8 @@ class _PastEventsScreenState extends State<PastEventsScreen> {
                     // If the future resolves with an error, show an error message.
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (snapshot.hasData) {
-                    ReturnObj<List<PastEventsYear>> response = snapshot.data!;
+                    ReturnObj<List<MonthlyEventDetail>> response =
+                        snapshot.data!;
                     return Align(
                       alignment: Alignment.topCenter,
                       child: SingleChildScrollView(
@@ -60,9 +64,9 @@ class _PastEventsScreenState extends State<PastEventsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const SizedBox(height: 100),
-                                const Text(
-                                  APP_TEXT_CONSTANTS.PAST_EVENTS,
-                                  style: TextStyle(
+                                Text(
+                                  monthMap[int.tryParse(widget.month)]!,
+                                  style: const TextStyle(
                                     fontFamily: "Helvetica",
                                     color: Colors.white,
                                     fontWeight: FontWeight.w300,
@@ -70,9 +74,10 @@ class _PastEventsScreenState extends State<PastEventsScreen> {
                                     decoration: TextDecoration.none,
                                   ),
                                 ),
-                                const Text(
-                                  "Overview",
-                                  style: TextStyle(
+                                const SizedBox(height: 1),
+                                Text(
+                                  widget.year,
+                                  style: const TextStyle(
                                     fontFamily: "Helvetica",
                                     color: Colors.white,
                                     fontWeight: FontWeight.w300,
@@ -83,14 +88,14 @@ class _PastEventsScreenState extends State<PastEventsScreen> {
                                 const SizedBox(height: 40),
                                 ...response.data!.expand((data) {
                                   return [
-                                    PastEventsYearButton(
-                                      onPressed: () {
-                                        Get.toNamed("/past-event-month-screen",
-                                            arguments: {
-                                              "year": data.year.toString()
-                                            });
-                                      },
-                                      year: data.year.toString(),
+                                    PastEventsMonthlyDetails(
+                                      onPressed: () => {},
+                                      eventName: data.name,
+                                      date: data.eventDate
+                                          .toString()
+                                          .split(" ")[0],
+                                      totalAmount: data.totalAmount.toString(),
+                                      totalOrders: data.totalOrders.toString(),
                                       heightofButton: 90,
                                       borderRadius: 30,
                                       fontSize: 45,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class EventCreationScreen extends StatefulWidget {
   const EventCreationScreen({
@@ -42,7 +43,8 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
       setState(() {
         _selectedDate = picked;
         dateController.text = _selectedDate!.toLocal().toString().split(' ')[0];
-
+        controller.fromDate.value =
+            _selectedDate!.toLocal().toString().split(' ')[0];
         print(
             "ssssssssssssssssssssssssssssssssss ${dateController.text}"); // Format the date as needed
       });
@@ -61,15 +63,22 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
       setState(() {
         if (isFrom) {
           _selectedFromTime = picked;
-          fromTimeController.text = _selectedFromTime!.format(context);
+          fromTimeController.text = _formatTimeOfDay(_selectedFromTime!);
           // Format the time as needed
         } else {
           _selectedToTime = picked;
           toTimeController.text =
-              _selectedToTime!.format(context); // Format the time as needed
+              _formatTimeOfDay(_selectedToTime!); // Format the time as needed
         }
       });
     }
+  }
+
+  String _formatTimeOfDay(TimeOfDay time) {
+    final now = DateTime.now();
+    final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    return DateFormat('HH:mm')
+        .format(dt); // Format as 'HH:mm' for 24-hour format
   }
 
   @override
@@ -129,7 +138,12 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                           vertical: 10.0, horizontal: 40.0),
                       child: TextField(
                         controller: eventName,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 23,
+                          decoration: TextDecoration.none,
+                        ),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xFF4f5273),
@@ -152,7 +166,12 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                           vertical: 10.0, horizontal: 40.0),
                       child: TextField(
                         controller: dateController,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 23,
+                          decoration: TextDecoration.none,
+                        ),
                         readOnly: true, // This makes the TextField read-only
                         onTap: () =>
                             _selectDate(context), // Open date picker on tap
@@ -428,7 +447,14 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                     GestureDetector(
                       onTap: () => {
                         if (controller.isCounterSelected())
-                          {}
+                          {
+                            controller.submitEvent(
+                                dateController.text,
+                                fromTimeController.text,
+                                toTimeController.text,
+                                eventName.text,
+                                selectedAge!)
+                          }
                         else
                           {
                             Fluttertoast.showToast(

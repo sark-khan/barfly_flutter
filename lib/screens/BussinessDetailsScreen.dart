@@ -34,7 +34,7 @@ class _BussinessDetailsScreenState extends State<BussinessDetailsScreen> {
                             vertical: 10.0, horizontal: 40.0),
                         child: RichText(
                           textAlign: TextAlign.center,
-                          text: TextSpan(
+                          text: const TextSpan(
                             children: [
                               TextSpan(
                                 text: 'What kind of a \n',

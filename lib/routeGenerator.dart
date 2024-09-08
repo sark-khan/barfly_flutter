@@ -19,6 +19,8 @@ import 'package:barfly/screens/add_repetitive_screen.dart';
 import 'package:barfly/screens/event_creation_screen.dart';
 import 'package:barfly/screens/item_list_stock.dart';
 import 'package:barfly/screens/live_orders_screen.dart';
+import 'package:barfly/screens/past_event_monthly.dart';
+import 'package:barfly/screens/past_event_monthly_details_screen.dart';
 import 'package:barfly/screens/setting_screen_counter.dart';
 import 'package:barfly/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -155,15 +157,29 @@ class AppRoutes {
       ),
       transition: Transition.fade,
     ),
+    GetPage(
+      name: '/past-event-month-screen',
+      page: () => PastEventMonthly(
+        year: Get.arguments["year"],
+      ),
+      transition: Transition.fade,
+    ),
+
+    GetPage(
+      name: '/past-event-monthly-details-screen',
+      page: () => PastEventMonthlyDetailsScreen(
+          year: Get.arguments["year"], month: Get.arguments["month"]),
+      transition: Transition.fade,
+    ),
   ];
 
   static GetPage<dynamic> unknownRoute = GetPage(
     name: '/error',
     page: () => Scaffold(
       appBar: AppBar(
-        title: Text('Error'),
+        title: const Text('Error'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('ERROR: Page not found'),
       ),
     ),

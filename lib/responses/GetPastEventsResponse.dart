@@ -1,53 +1,46 @@
-// To parse this JSON data, do
-//
-//     final getPastEventsResponse = getPastEventsResponseFromJson(jsonString);
-
 import 'dart:convert';
 
-GetPastEventsResponse getPastEventsResponseFromJson(String str) =>
-    GetPastEventsResponse.fromJson(json.decode(str));
+GetPastEventsYearResponse getPastEventsYearResponseFromJson(String str) =>
+    GetPastEventsYearResponse.fromJson(json.decode(str));
 
-String getPastEventsResponseToJson(GetPastEventsResponse data) =>
+String getPastEventsYearResponseToJson(GetPastEventsYearResponse data) =>
     json.encode(data.toJson());
 
-class GetPastEventsResponse {
+class GetPastEventsYearResponse {
   String message;
-  List<GetPastEvents> data;
+  List<PastEventsYear> pastEventsYear;
 
-  GetPastEventsResponse({
+  GetPastEventsYearResponse({
     required this.message,
-    required this.data,
+    required this.pastEventsYear,
   });
 
-  factory GetPastEventsResponse.fromJson(Map<String, dynamic> json) =>
-      GetPastEventsResponse(
+  factory GetPastEventsYearResponse.fromJson(Map<String, dynamic> json) =>
+      GetPastEventsYearResponse(
         message: json["message"],
-        data: List<GetPastEvents>.from(
-            json["data"].map((x) => GetPastEvents.fromJson(x))),
+        pastEventsYear: List<PastEventsYear>.from(
+            json["pastEventsYear"].map((x) => PastEventsYear.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "pastEventsYear":
+            List<dynamic>.from(pastEventsYear.map((x) => x.toJson())),
       };
 }
 
-class GetPastEvents {
+class PastEventsYear {
   int year;
-  int month;
 
-  GetPastEvents({
+  PastEventsYear({
     required this.year,
-    required this.month,
   });
 
-  factory GetPastEvents.fromJson(Map<String, dynamic> json) => GetPastEvents(
+  factory PastEventsYear.fromJson(Map<String, dynamic> json) => PastEventsYear(
         year: json["year"],
-        month: json["month"],
       );
 
   Map<String, dynamic> toJson() => {
         "year": year,
-        "month": month,
       };
 }

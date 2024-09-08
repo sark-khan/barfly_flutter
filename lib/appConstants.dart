@@ -5,7 +5,7 @@ class APPCOLORS {
   static const Color buttonColor = Color(0xFF2ac4aa);
 }
 
-class APP_FONT_SIZE {
+class AppFontSize {
   static const double headerFont = 40.0;
 }
 

@@ -2,8 +2,6 @@ import 'package:barfly/apis.dart';
 import 'package:barfly/appConstants.dart';
 import 'package:barfly/commonFunction.dart';
 import 'package:barfly/components/Buttons.dart';
-import 'package:barfly/responses/GetItemsOfMenuResponse.dart';
-import 'package:barfly/responses/GetMenuOfInsiderResponse.dart';
 import 'package:barfly/responses/GetUpcomingEventsResponse.dart';
 
 import 'package:flutter/material.dart';
@@ -48,9 +46,7 @@ class _UpcomingEventsScreenState extends State<UpcomingEventsScreen> {
                     // If the future resolves with an error, show an error message.
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (snapshot.hasData) {
-                    ReturnObj<List<GetUpcomingEvents>> response =
-                        snapshot.data!;
-                    print("reached herer");
+                    ReturnObj<List<UpcomingEvent>> response = snapshot.data!;
                     return Align(
                       alignment: Alignment.topCenter,
                       child: SingleChildScrollView(
@@ -67,8 +63,9 @@ class _UpcomingEventsScreenState extends State<UpcomingEventsScreen> {
                                 const Text(
                                   APP_TEXT_CONSTANTS.UPCOMING_EVENTS,
                                   style: TextStyle(
+                                    fontFamily: "Helvetica",
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w100,
+                                    fontWeight: FontWeight.w300,
                                     fontSize: 30,
                                     decoration: TextDecoration.none,
                                   ),
@@ -79,8 +76,8 @@ class _UpcomingEventsScreenState extends State<UpcomingEventsScreen> {
                                     UpcomingEvents(
                                       onPressed: () => {},
                                       eventName: data.eventName,
-                                      date:
-                                          formatTimestamp(data.date.toString()),
+                                      date: formatTimestamp(
+                                          data.startingDate.toString()),
                                       timeRange:
                                           "${formatTime(data.from.toString())}-${formatTime(data.to.toString())}",
                                       heightofButton: 150,
@@ -94,17 +91,17 @@ class _UpcomingEventsScreenState extends State<UpcomingEventsScreen> {
                                     )
                                   ];
                                 }),
-                                CustomButtonStroked(
-                                  text: "+",
+                                CustomStrokedButton(
+                                  isAdding: false,
                                   fontSize: 50,
                                   borderRadius: 20,
                                   onPressed: () => {
                                     Navigator.pushNamed(
                                         context, "/event-creation")
                                   },
-                                  widthofButton: 80,
+                                  // widthofButton: 80,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 )
                               ],

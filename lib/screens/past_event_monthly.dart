@@ -1,26 +1,29 @@
 import 'package:barfly/apis.dart';
 import 'package:barfly/appConstants.dart';
 import 'package:barfly/components/Buttons.dart';
+import 'package:barfly/responses/GetPastEventsMontsOfYear.dart';
 import 'package:barfly/responses/GetPastEventsResponse.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PastEventsScreen extends StatefulWidget {
-  const PastEventsScreen({
+class PastEventMonthly extends StatefulWidget {
+  final String year;
+  const PastEventMonthly({
+    required this.year,
     super.key,
   });
 
   @override
-  State createState() => _PastEventsScreenState();
+  State createState() => _PastEventMonthlyState();
 }
 
-class _PastEventsScreenState extends State<PastEventsScreen> {
+class _PastEventMonthlyState extends State<PastEventMonthly> {
   late Future<dynamic> futureData;
   @override
   void initState() {
     super.initState();
-    futureData = apis().GetPastEventsApi();
+    futureData = apis().getPastEventsMonths(widget.year);
   }
 
   @override
@@ -46,7 +49,7 @@ class _PastEventsScreenState extends State<PastEventsScreen> {
                     // If the future resolves with an error, show an error message.
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (snapshot.hasData) {
-                    ReturnObj<List<PastEventsYear>> response = snapshot.data!;
+                    ReturnObj<List<PastEventsMonths>> response = snapshot.data!;
                     return Align(
                       alignment: Alignment.topCenter,
                       child: SingleChildScrollView(
@@ -83,13 +86,16 @@ class _PastEventsScreenState extends State<PastEventsScreen> {
                                 const SizedBox(height: 40),
                                 ...response.data!.expand((data) {
                                   return [
-                                    PastEventsYearButton(
-                                      onPressed: () {
-                                        Get.toNamed("/past-event-month-screen",
+                                    PastEventsMonth(
+                                      onPressed: () => {
+                                        Navigator.pushNamed(context,
+                                            "/past-event-monthly-details-screen",
                                             arguments: {
-                                              "year": data.year.toString()
-                                            });
+                                              "year": widget.year,
+                                              "month": data.month.toString()
+                                            })
                                       },
+                                      monthName: monthMap[data.month]!,
                                       year: data.year.toString(),
                                       heightofButton: 90,
                                       borderRadius: 30,
